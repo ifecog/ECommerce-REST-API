@@ -1,9 +1,15 @@
 from django.urls import path
-from . import views
+from .views import UserViewSet
 
 urlpatterns = [
-    path('register/', views.register_user, name='register'),
-    path('login/', views.MyTokenObtainPairView.as_view(), name='token-obtain-pair'),
-    path('users/', views.get_users, name='users'),
-    
+    path('users/', UserViewSet.as_view({
+        'get': 'list', 
+        'post': 'create'       
+    })),
+    path('users/<str:pk>/', UserViewSet.as_view({
+        'get': 'retrieve',
+        'put': 'update',
+        'delete': 'destroy'
+    }))
+        
 ]

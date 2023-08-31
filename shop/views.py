@@ -80,6 +80,12 @@ class UserViewSet(viewsets.ViewSet):
         user = get_object_or_404(CustomUser, id=pk)     
         serializer = CustomUserSerializer(instance=user, data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        serializer.validated_data['first_name'] = request.data['first_name']
+        serializer.validated_data['last_name'] = request.data['last_name']
+        serializer.validated_data['phone_number'] = request.data['phone_number']
+        serializer.validated_data['password'] = make_password(request.data['password'])
+        
         serializer.save()
         
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

@@ -11,7 +11,7 @@ from shop.serializers import MyTokenObtainPairSerializer, CustomUserSerializer, 
 from users.models import CustomUser
 
 from .permissions import IsAdminOrSelf
-
+from .utils import send_email
 # Create your views here.
 
 class UserViewSet(viewsets.ViewSet):
@@ -21,11 +21,21 @@ class UserViewSet(viewsets.ViewSet):
         serializer = CustomUserSerializerWithToken(data=request.data)
         serializer.is_valid(raise_exception=True)
         
+        serializer.validated_data['first_name'] = request.data['first_name']
+        serializer.validated_data['last_name'] = request.data['last_name']
+        serializer.validated_data['phone_number'] = request.data['phone_number']
+        serializer.validated_data['password'] = make_password(request.data['password'])
+        
         try:
-            serializer.save()
+            serializer.save()          
+            
         except Exception as e:
-            message = {'detail': 'User with email already exists, please login!'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            detail = {'detail': 'User with email already exists, please login!'}
+            return Response(detail, status=status.HTTP_400_BAD_REQUEST)
+        
+        # call the send_email function to send a welcome mail after user registration
+        welcome_text = 'This is a text'
+        send_email(serializer.instance, welcome_text)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

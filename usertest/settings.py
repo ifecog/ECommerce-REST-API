@@ -173,6 +173,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Email settings
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='mydefaultvalue')
+SERVER_EMAIL = config('SERVER_EMAIL', default='mydefaultvalue')
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='mydefaultvalue')
+EMAIL_HOST = config('EMAIL_HOST', default='mydefaultvalue')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='mydefaultvalue')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='mydefaultvalue')
+EMAIL_PORT = config('EMAIL_PORT', default='mydefaultvalue')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

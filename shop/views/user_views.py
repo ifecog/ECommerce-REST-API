@@ -7,11 +7,11 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from shop.serializers import MyTokenObtainPairSerializer, CustomUserSerializer, CustomUserSerializerWithToken
 from users.models import CustomUser
 
-from .permissions import IsAdminOrSelf
-from .utils import send_email
+from shop.serializers import MyTokenObtainPairSerializer, CustomUserSerializer, CustomUserSerializerWithToken
+from shop.permissions import IsAdminOrSelf
+from shop.utils import send_email
 # Create your views here.
 
 class UserViewSet(viewsets.ViewSet):
@@ -34,8 +34,10 @@ class UserViewSet(viewsets.ViewSet):
             return Response(detail, status=status.HTTP_400_BAD_REQUEST)
         
         # call the send_email function to send a welcome mail after user registration
-        welcome_text = 'This is a text'
-        send_email(serializer.instance, welcome_text)
+        subject = 'Welcome!'
+        template_name = 'welcome_email.html'
+        context = {'user': serializer.instance}
+        send_email(serializer.instance, subject, template_name, context)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

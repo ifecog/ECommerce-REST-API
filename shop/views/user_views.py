@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import CustomUser
 
-from shop.serializers import MyTokenObtainPairSerializer, CustomUserSerializer, CustomUserSerializerWithToken
+from shop.serializers.user_serializers import MyTokenObtainPairSerializer, CustomUserSerializer, CustomUserSerializerWithToken
 from shop.permissions import IsAdminOrSelf
 from shop.utils import send_email
 # Create your views here.
@@ -42,7 +42,7 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-    @action(detail=False, methods=['get'], permission_classes=[IsAdminUser])
+    @action(detail=False, methods=['get'])
     def get_users(self, request):
         users = CustomUser.objects.all()
         serializer = CustomUserSerializer(users, many=True)

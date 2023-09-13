@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
+from shop.permissions import IsAdminOrSelf
 from shop.models import Product, Category, Brand
 from shop.serializers.product_serializers import ProductSerializer
 
@@ -15,7 +16,8 @@ from shop.serializers.product_serializers import ProductSerializer
 
 class ProductViewSet(viewsets.ViewSet):
     
-    def list(self, request):
+    @action(detail=False, methods=['get'])
+    def get_products(self, request):
         category_id = request.query_params.get('category')
         brand_id = request.query_params.get('brand')
         min_price = request.query_params.get('min_price')
@@ -55,4 +57,11 @@ class ProductViewSet(viewsets.ViewSet):
             'page': page,
             'pages': paginator.num_pages
         })
+    
+    @action(detail=False, methods=['get'])
+    def get_toprated_products(self, request):
+        products = Product.objects.filter(rating__gte=3).order_by('-rating')[:5]
+        serializer = ProductSerializer(products, many=True)
+        
+        return Response(serializer.data)
         

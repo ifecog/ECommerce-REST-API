@@ -51,18 +51,17 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
     
-    # @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
-    # def get_user_profile(self, request):
-    #     user = request.user
-    #     serializer = CustomUserSerializer(user, many=False)
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def get_user_profile(self, request):
+        user = request.user
+        serializer = CustomUserSerializer(user, many=False)
         
-    #     return Response(serializer.data)
+        return Response(serializer.data)
             
 
     @action(detail=False, methods=['put'], permission_classes=[IsAuthenticated])
     def update_user_profile(self, request):
-        user = request.user
-        
+        user = request.user        
         serializer = CustomUserSerializerWithToken(user, many=False)
         
         data = request.data
@@ -78,8 +77,8 @@ class UserViewSet(viewsets.ViewSet):
         user.save()
         
         return Response(serializer.data)
-
-        
+    
+         
     @action(detail=True, methods=['get'], permission_classes=[IsAdminOrSelf])
     def get_user_by_id(self, request, pk=None):
         user = get_object_or_404(CustomUser, id=pk)
@@ -88,7 +87,7 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
 
-    @action(detail=True, methods=['put'], permission_classes=[IsAdminOrSelf])
+    @action(detail=True, methods=['put'], permission_classes=[IsAdminUser])
     def update_user_by_id(self, request, pk=None):
         user = get_object_or_404(CustomUser, id=pk)     
         serializer = CustomUserSerializer(instance=user, data=request.data)

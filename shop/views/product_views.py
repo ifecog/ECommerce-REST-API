@@ -72,4 +72,7 @@ class ProductViewSet(viewsets.ViewSet):
         product = get_object_or_404(Product, _id=pk)
         serializer = ProductSerializer(product, many=False)
         
-        return Response(serializer.data)    
+        return Response(serializer.data) 
+    
+    # @action(detail=False, methods=['post'])
+       

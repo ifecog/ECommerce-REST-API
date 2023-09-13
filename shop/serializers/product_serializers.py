@@ -18,7 +18,7 @@ class BrandSerializer(serializers.ModelSerializer):
         
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
-    Brand = BrandSerializer(read_only=True)
+    brand = BrandSerializer(read_only=True)
     
     class Meta:
         model = Product

@@ -58,10 +58,18 @@ class ProductViewSet(viewsets.ViewSet):
             'pages': paginator.num_pages
         })
     
+    
     @action(detail=False, methods=['get'])
     def get_toprated_products(self, request):
         products = Product.objects.filter(rating__gte=3).order_by('-rating')[:5]
         serializer = ProductSerializer(products, many=True)
         
         return Response(serializer.data)
+    
+    
+    @action(detail=True, methods=['get'])
+    def get_product_by_id(self, request, pk=None):
+        product = get_object_or_404(Product, _id=pk)
+        serializer = ProductSerializer(product, many=False)
         
+        return Response(serializer.data)    

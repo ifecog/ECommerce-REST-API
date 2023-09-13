@@ -17,6 +17,31 @@ class Category(models.Model):
         return self.name
     
     
+class Brand(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='uploads/brands/', null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    
+       
+    def __str__(self):
+        return self.name
+    
+    
 
-class Product(models.Model):
+# class Product(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+#     name = models.CharField(max_length=200, null=True, blank=True)
+#     image = models.ImageField(upload_to='/uploads/products/', null=True, blank=True, default='/placeholder.png')
+#     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+#     description = models.TextField(null=True, blank=True)
+#     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+#     quantity = models.IntegerField(null=True, blank=True, default=0)
+#     rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+#     no_of_reviews = models.IntegerField(null=True, blank=True, default=0)
+#     created_time = models.DateTimeField(auto_now_add=True)
+#     _id = models.AutoField(primary_key=True, editable=False)
+    
+#     def __str__(self):
+#         return self.name
     

@@ -74,5 +74,8 @@ class ProductViewSet(viewsets.ViewSet):
         
         return Response(serializer.data) 
     
-    # @action(detail=False, methods=['post'])
+    
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    def create_product_review(self, request, pk=None):
+        user = request.user
        

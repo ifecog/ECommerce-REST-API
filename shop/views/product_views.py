@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from shop.permissions import IsAdminOrSelf
-from shop.models import Product, Category, Brand
+from shop.models import Product, Category, Brand, Review
 from shop.serializers.product_serializers import ProductSerializer
 
 # create your views here.
@@ -75,7 +75,39 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(serializer.data) 
     
     
-    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def create_product_review(self, request, pk=None):
         user = request.user
+        product = get_object_or_404(Product, _id=pk)
+        data = request.data
+        
+        already_exists = product.review_set.filter(user=user).exists()
+        
+        if already_exists:
+            message = {'detail': 'Product already reviewed by user!'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        
+        elif data['rating'] == 0:
+            message = {'detail': 'Kindly select a rating'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            review = Review.objects.create(
+                product=product,
+                user=user,
+                name=user.first_name,
+                rating=data['rating'],
+                comment=data['comment']
+            )
+            reviews = product.review_set.all()
+            product.no_of_reviews = len(reviews)
+            
+            total = 0
+            for i in reviews:
+                total += i.rating
+                
+            product.rating = total / len(reviews)
+            product.save()
+            
+            return Response('Review Added', status=status.HTTP_201_CREATED)
+
        

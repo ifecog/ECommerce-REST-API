@@ -138,3 +138,14 @@ class ProductViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         
+    @action(detail=False, methods=['post'])
+    def upload_image(self, request):
+        data = request.data
+        
+        product_id = data['product_id']
+        product = get_object_or_404(Product, _id=product_id)
+        product.image = request.FILES.get('image')
+        product.save()
+        
+        return Response('Image uploaded successfully', status=status.HTTP_201_CREATED)
+        

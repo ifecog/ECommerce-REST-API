@@ -149,3 +149,31 @@ class ProductViewSet(viewsets.ViewSet):
         
         return Response('Image uploaded successfully', status=status.HTTP_201_CREATED)
         
+        
+    @action(detail=True, methods=['put'], permission_classes=[IsAdminUser])
+    def update_product(self, request, pk=None):
+        product = get_object_or_404(Product, _id=pk)
+        
+        data = request.data
+        
+        product.name = data['name']
+        product.description = data['description']
+        product.price = data['price']
+        product.quantity = data['quantity']
+        
+        product.save()
+        
+        serializer = ProductSerializer(product, many=False)
+        
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        
+        
+    @action(detail=True, methods=['delete'], permission_classes=[IsAdminUser])
+    def delete_product(self, request, pk=None):
+        product = get_object_or_404(Product, _id=pk)        
+        product.delete()
+        
+        return Response('Product successfully deleted', status=status.HTTP_204_NO_CONTENT)
+        
+        
+        

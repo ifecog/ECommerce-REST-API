@@ -37,6 +37,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     quantity = models.IntegerField(null=True, blank=True, default=0)
+    is_fragile = models.BooleanField(default=False)
     rating = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     no_of_reviews = models.IntegerField(null=True, blank=True, default=0)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -44,6 +45,17 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        # check if category is Electronics
+        if self.category and self.category.name in ['Electronics',]:
+            self.is_fragile = True
+        else:
+            self.is_fragile = False
+            
+        print(f"Category: {self.category.name}, is_fragile: {self.is_fragile}")    
+        
+        super().save(*args, **kwargs)
     
     
 class Review(models.Model):

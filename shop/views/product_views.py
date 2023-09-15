@@ -110,4 +110,31 @@ class ProductViewSet(viewsets.ViewSet):
             
             return Response('Review Added', status=status.HTTP_201_CREATED)
 
-       
+    
+    @action(detail=False, methods=['post'], permission_classes=[IsAdminUser])
+    def create_product(self, request):
+        user = request.user
+        category = Category.objects.create(
+            name='Test Category',
+            description='Test Description'
+        )
+        
+        brand = Brand.objects.create(
+            name='Test Brand',
+            description='Test Description'
+        )
+        product = Product.objects.create(
+            user=user,
+            category=category,
+            brand=brand,
+            name='Sample Name',
+            description='',
+            price=0,
+            quantity=0
+        )
+        
+        serializer = ProductSerializer(product, many=False)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        

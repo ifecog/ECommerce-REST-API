@@ -7,7 +7,7 @@ from users.models import CustomUser
 class Category(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='uploads/categories/', null=True)
+    image = models.ImageField(upload_to='uploads/categories/', null=True, default='/placeholder.png')
     _id = models.AutoField(primary_key=True, editable=False)
     
     class Meta:
@@ -20,7 +20,7 @@ class Category(models.Model):
 class Brand(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='uploads/brands/', null=True)
+    image = models.ImageField(upload_to='uploads/brands/', null=True, default='/placeholder.png')
     _id = models.AutoField(primary_key=True, editable=False)
     
        

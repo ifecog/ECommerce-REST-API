@@ -194,3 +194,5 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = 'amqp://localhost'

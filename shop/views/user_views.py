@@ -11,7 +11,8 @@ from users.models import CustomUser
 
 from shop.serializers.user_serializers import MyTokenObtainPairSerializer, CustomUserSerializer, CustomUserSerializerWithToken
 from shop.permissions import IsAdminOrSelf
-from shop.utils import send_email
+# from shop.utils import send_email
+from shop.tasks import send_email
 
 # Create your views here.
 
